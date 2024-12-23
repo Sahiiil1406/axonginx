@@ -1,0 +1,28 @@
+nginx:
+  port: 80
+  worker_processes: 4
+  host: "localhost"
+  upstreams:
+    - name: "upstream1"
+      servers:
+        - "http://localhost:8080"
+        - "http://localhost:8081"
+    - name: "upstream2"
+      servers:
+        - "http://localhost:8082"
+        - "http://localhost:8083"
+  proxies:
+    - name: "proxy1"
+      location: "/proxy1"
+      upstream: "http://localhost:8000"
+      rules: "round-robin"  # rules: [round-robin, least-connections, ip-hash, random, weighted] default: round-robin
+    - name: "proxy2"
+      location: "/proxy2"
+      upstream: "upstream2"
+  render:
+    - filename: "one.html"
+      location: "/one"
+      templatePath: "C:\Use"
+    - filename: "two.html"
+      location: "/two"
+      templatePath: "./templates/2.html"
