@@ -39,16 +39,16 @@ class CacheManager {
 }
 
 const cacheManager = new CacheManager();
-cacheManager.addCache("kjd",{
-    body:"hello"
-})
+// cacheManager.addCache("kjd",{
+//     body:"hello"
+// })
+// // console.log(cacheManager.getAllKeys())
+// // cacheManager.addCache(2,{
+// //     body:"hello"
+// // })
+// // cacheManager.addCache(1,{
+// //     body:"hello"
+// // })
 // console.log(cacheManager.getAllKeys())
-// cacheManager.addCache(2,{
-//     body:"hello"
-// })
-// cacheManager.addCache(1,{
-//     body:"hello"
-// })
-console.log(cacheManager.getAllKeys())
 
 module.exports = cacheManager;

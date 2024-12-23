@@ -1,7 +1,7 @@
 
 const axios = require('axios');
 
-async function fetchData(key='http://localhost:8000') {
+async function fetchData(key) {
   try {
     const response = await axios.get(key, {
       headers: {
@@ -32,6 +32,5 @@ async function fetchData(key='http://localhost:8000') {
     console.error('Error fetching data:', error);
   }
 }
-fetchData()
 
 module.exports = { fetchData };

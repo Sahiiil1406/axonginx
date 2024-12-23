@@ -1,7 +1,8 @@
 {
   "nginx": {
-    "port": 80,
+    "port": 4000,
     "worker_processes": 4,
+    "ssl": false,
     "host": "localhost",
     "upstreams": [
       {
@@ -23,13 +24,12 @@
       {
         "name": "proxy1",
         "location": "/proxy1",
-        "upstream": "http://localhost:8000",
-        "rules": "round-robin"
+        "upstream": "https://jsonplaceholder.typicode.com/todos"
       },
       {
         "name": "proxy2",
         "location": "/proxy2",
-        "upstream": "upstream2"
+        "upstream": "https://www.google.com/"
       }
     ],
     "render": [
@@ -42,6 +42,13 @@
         "filename": "two.html",
         "location": "/two",
         "templatePath": "./templates/2.html"
+      }
+    ],
+    "load_balancer": [
+      {
+        "name": "lb1",
+        "upstream": "upstream1",
+        "algorithm": "round-robin"
       }
     ]
   }

@@ -1,10 +1,17 @@
 const express = require('express');
 const app = express();
 const cluster = require('node:cluster');
-const cacheManager = require('./cacheManager');
+const cacheManager = require('./cache/cacheManager.js');
 const { renderFile } = require('./utils/render.js');
 const { fetchData } = require('./utils/fetch.js');
+const https = require('https');
+const fs=require('fs')
 
+
+const sslOptions = {
+    key: fs.readFileSync('./templates/server.key'), // Path to your private key
+    cert: fs.readFileSync('./templates/server.crt') // Path to your certificate
+  };
 
 
 /*app.all('/test', (req, res) => {
@@ -48,7 +55,7 @@ function createServer(PORT, numCPUs, config) {
             app.all(element.location, (req, res) => {
                 const key = element.upstream; // Dynamic cache key using request URL
                 const cachedResponse = cacheManager.getCacheByKey(key);
-                console.log(cacheManager.getAllKeys())
+                //console.log(cacheManager.getAllKeys())
                 if (cachedResponse) {
                     console.log('Cache hit');
                     Object.entries(cachedResponse.headers).forEach(([headerName, headerValue]) => {
@@ -70,10 +77,18 @@ function createServer(PORT, numCPUs, config) {
                 });
             });
             })
-
-        app.listen(PORT, () => {
-            console.log(`Server started at http://localhost:${PORT}`);
-        });
+        const httpsServer = https.createServer(sslOptions, app);
+        if(config.nginx.ssl===true){
+            httpsServer.listen(PORT, () => {
+                console.log(`Server started at https://localhost:${PORT}`);
+                //console.log(sslOptions)
+            });
+        }else{
+            app.listen(PORT, () => {
+                console.log(`Server started at http://localhost:${PORT}`);
+                //console.log(sslOptions)
+            });
+        }
 
     } else {
         console.log(`Worker ${process.pid} started`);
@@ -83,7 +98,11 @@ function createServer(PORT, numCPUs, config) {
             try {
             const {body,headers}= await fetchData(key);
             console.log(body)
-            cacheManager.addCache(1,"Hello")
+            cacheManager.addCache(key,{
+                body:body,
+                headers:headers,
+                url:key
+            })
             process.send({ headers: headers, body:body });
             } catch (error) {
                 console.error(`Worker ${process.pid} failed to fetch data:`, error.message);

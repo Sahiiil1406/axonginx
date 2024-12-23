@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const fs = require('fs');
 
+// Load balancing algorithms
 const LOAD_BALANCING_RULES = [
   'round-robin',
   'least-connections',
@@ -23,6 +24,8 @@ const nginxConfigSchema = Joi.object({
     host: Joi.string()
       .hostname()
       .required(),
+    ssl: Joi.bool()
+    .required(),  
     upstreams: Joi.array().items(
       Joi.object({
         name: Joi.string()
@@ -53,14 +56,25 @@ const nginxConfigSchema = Joi.object({
           .default('round-robin')
       })
     ).required(),
-    render:Joi.array().items(
+    render: Joi.array().items(
       Joi.object({
         filename: Joi.string()
           .required(),
         location: Joi.string()
           .required(),
         templatePath: Joi.string()
-          .required()  
+          .required()
+      })
+    ),
+    load_balancer: Joi.array().items(
+      Joi.object({
+        name: Joi.string()
+          .required(),
+        upstream: Joi.string()
+          .required(),
+        algorithm: Joi.string()
+          .valid(...LOAD_BALANCING_RULES)
+          .required()
       })
     )
   }).required()
@@ -69,22 +83,25 @@ const nginxConfigSchema = Joi.object({
 // Validation function
 function validateConfig(path) {
   try {
-    // If config is a string, parse it first
+    // Read and parse JSON config file
     const config = fs.readFileSync(path, 'utf8');
-    const configObj = typeof config === 'string' ? JSON.parse(config) : config;
+    const configObj = JSON.parse(config);
 
+    // Validate the parsed config object against the schema
     const result = nginxConfigSchema.validate(configObj, {
       abortEarly: false,
       allowUnknown: false
     });
-    if(result.error) {
-      console.error('Validation error:', result.error.message);
-    }
-    //console.log('Validation successfully done');
-    return result;
 
-    return result;
+    if (result.error) {
+      console.error('Validation Errors:', result.error.details.map(e => e.message).join('\n'));
+      return { error: result.error.details };
+    }
+
+    console.log('Validation Successful!');
+    return { value: result.value }; // Return the validated value
   } catch (error) {
+    console.error('Error reading or parsing config:', error.message);
     return { error: `Invalid JSON format: ${error.message}` };
   }
 }
