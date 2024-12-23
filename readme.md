@@ -10,7 +10,7 @@ Optional:
 - [x] SSL
 
 Architecture:
-![alt text](image.png)
+
 1.Master process:
 - Accept incoming connections
 - Create worker processes
