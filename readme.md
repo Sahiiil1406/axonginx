@@ -1,4 +1,4 @@
-# Nginx Clone in JavaScript
+# AxoNginx
 
 ## Features
 - ✔ Serve static files
