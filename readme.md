@@ -3,15 +3,14 @@
 ## Features
 - ✔ Serve static files
 - ✔ Reverse proxy
-- ✔ Caching
 - ✔ SSL support
-- ✔ Rate limiting
 - ✔ Load balancing:
   - ✔ Round Robin
   - ✔ Random
-  - ✔ Weighted Round Robin
+  - ✔ Ip-Hash
   - ✔ Weighted Random
-
+- ✔ Rate limiting
+- ✔ Caching
 
 ## Architecture
 ![Screenshot 2024-12-24 023409](https://github.com/user-attachments/assets/0fd009ba-e12a-4012-8a28-b4a3e917dbd7)
@@ -52,7 +51,7 @@
 - Custom algorithms implemented in JavaScript for:
   - Round Robin
   - Random
-  - Weighted Round Robin
+  - Ip-Hash
   - Weighted Random
 
 ### **Rate Limiting**
