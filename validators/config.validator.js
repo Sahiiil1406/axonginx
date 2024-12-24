@@ -4,7 +4,6 @@ const fs = require('fs');
 // Load balancing algorithms
 const LOAD_BALANCING_RULES = [
   'round-robin',
-  'least-connections',
   'ip-hash',
   'random',
   'weighted'
@@ -70,11 +69,14 @@ const nginxConfigSchema = Joi.object({
       Joi.object({
         name: Joi.string()
           .required(),
+        location:Joi.string()
+        .required(),  
         upstream: Joi.string()
           .required(),
         algorithm: Joi.string()
           .valid(...LOAD_BALANCING_RULES)
-          .required()
+          .required(),
+        weight:Joi.array(),  
       })
     )
   }).required()

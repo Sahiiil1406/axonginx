@@ -8,8 +8,9 @@
       {
         "name": "upstream1",
         "servers": [
-          "http://localhost:8080",
-          "http://localhost:8081"
+          "http://localhost:4000/one",
+          "http://localhost:4000/two",
+          "http://localhost:4000/three"
         ]
       },
       {
@@ -41,14 +42,25 @@
       {
         "filename": "two.html",
         "location": "/two",
+        "templatePath": "./templates/two.html"
+      },
+      {
+        "filename": "three.html",
+        "location": "/three",
         "templatePath": "./templates/2.html"
       }
     ],
     "load_balancer": [
       {
         "name": "lb1",
+        "location": "/l1",
         "upstream": "upstream1",
-        "algorithm": "round-robin"
+        "algorithm": "weighted",
+        "weight": [
+          2,
+          2,
+          2
+        ]
       }
     ]
   }
