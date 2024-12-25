@@ -91,7 +91,7 @@ Configure reverse proxy targets in the `config.json` file. Example:
 - Default rate limit: `100 requests per 15 minutes` per IP.
   
 ### SSL
-- Place your SSL certificate and key in the `ssl/` directory.
+- Place your SSL certificate and key in the `template/` directory.
 
 
 ### Load Balancing
