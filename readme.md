@@ -1,5 +1,8 @@
 # AxoNginx
+AxoNginx is a lightweight, feature-rich web server built entirely in Node.js that brings the core functionality of traditional web servers to JavaScript environments. Designed with modern web applications in mind, it combines the simplicity of Express.js with advanced server capabilities including reverse proxying, SSL termination, intelligent load balancing, and built-in caching mechanisms.
 
+
+Built on a robust master-worker architecture using Node.js clustering, AxoNginx delivers high-performance request handling while maintaining scalability and fault tolerance. Whether you're serving static files, load balancing across multiple upstream servers, or implementing sophisticated rate limiting policies, AxoNginx provides a comprehensive solution that's both developer-friendly and production-ready. Its modular design supports multiple load balancing algorithms including Round Robin, IP-Hash, and Weighted Random, making it suitable for everything from simple static sites to complex microservice architectures.
 ## Features
 - ✔ Serve static files
 - ✔ Reverse proxy
